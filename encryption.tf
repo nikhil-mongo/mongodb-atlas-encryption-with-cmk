@@ -1,7 +1,14 @@
+resource "null_resource" "previous" {}
+
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [null_resource.previous]
+
+  create_duration = "30s"
+}
 resource "mongodbatlas_encryption_at_rest" "encrypt" {
   project_id = var.project_id
 
-  aws_kms = {
+  aws_kms_config  {
     enabled                = true
     customer_master_key_id = aws_kms_key.encrypt.key_id
     region                 = upper(var.aws_region)
@@ -10,5 +17,5 @@ resource "mongodbatlas_encryption_at_rest" "encrypt" {
 
   # Unified AWS Access needs to be configured and a IAM role based trust relationship
   # established with MongoDb Atlas AWS account before we can turn on encryption.
-  depends_on = [aws_kms_alias.encrypt]
+  depends_on = [aws_kms_alias.encrypt,time_sleep.wait_30_seconds]
 }

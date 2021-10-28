@@ -21,11 +21,11 @@ resource "mongodbatlas_cluster" "cluster" {
   provider_instance_size_name = "M10"
 
   # Cloud backup
-  provider_backup_enabled = true
+  cloud_backup = true
   pit_enabled             = false
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   # Encryption needs to be turned on for the project before it can be enabled on the cluster

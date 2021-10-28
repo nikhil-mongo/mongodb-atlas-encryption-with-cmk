@@ -8,8 +8,14 @@ resource "aws_iam_role_policy" "test_policy" {
     "Statement": [
       {
         "Effect": "Allow",
-		"Action": "*",
-		"Resource": "*"
+		"Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:DescribeKey"
+    ],
+		"Resource": "${aws_kms_key.encrypt.arn}"
       }
     ]
   }
@@ -26,12 +32,12 @@ resource "aws_iam_role" "test_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "${mongodbatlas_cloud_provider_access_setup.setup_only.aws.atlas_aws_account_arn}"
+        "AWS": "${mongodbatlas_cloud_provider_access_setup.setup_only.aws_config[0].atlas_aws_account_arn}"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
         "StringEquals": {
-          "sts:ExternalId": "${mongodbatlas_cloud_provider_access_setup.setup_only.aws.atlas_assumed_role_external_id}"
+          "sts:ExternalId": "${mongodbatlas_cloud_provider_access_setup.setup_only.aws_config[0].atlas_assumed_role_external_id}"
         }
       }
     }
