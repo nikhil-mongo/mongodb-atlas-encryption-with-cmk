@@ -20,7 +20,7 @@ variable "project_id" {
 
 }
 variable "mongodb_project_name" {
-
+ default = "atlas-terraform"
 }
 variable "enable_kms_key_rotation" {
   default = "true"

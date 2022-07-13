@@ -15,7 +15,10 @@ resource "aws_iam_role_policy" "test_policy" {
         "kms:GenerateDataKey*",
         "kms:DescribeKey"
     ],
-		"Resource": "${aws_kms_key.encrypt.arn}"
+		"Resource" :[ 
+      "${aws_kms_key.encrypt.arn}",
+      "${aws_kms_key.encrypt-new.arn}"
+    ]
       }
     ]
   }
